@@ -11,6 +11,9 @@
 # Binary built from this repository
 /hachi
 
+# GoReleaser output
+/dist/
+
 # Test binary, built with `go test -c`
 *.test
 

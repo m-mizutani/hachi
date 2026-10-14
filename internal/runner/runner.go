@@ -36,7 +36,7 @@ func Run(ctx context.Context, argv []string) (*Result, error) {
 	}
 
 	var stdout, stderr bytes.Buffer
-	c := exec.CommandContext(ctx, argv[0], argv[1:]...)
+	c := exec.CommandContext(ctx, argv[0], argv[1:]...) // #nosec G204 -- running the user-given command is the purpose of hachi
 	c.Stdin = nil
 	c.Stdout = &stdout
 	c.Stderr = &stderr

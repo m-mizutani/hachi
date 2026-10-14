@@ -1,0 +1,34 @@
+name: Security Scan
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  gosec:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: cicd-sensor/cicd-sensor-action@cb0546d5707fcb68bf755006cb97817b3750996b # v0.0.39
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # gosec is installed with the Go version from go.mod instead of using the
+      # gosec action, whose container may ship an older Go than go.mod requires.
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+      - name: Run gosec
+        # Findings are reported through GitHub code scanning instead of failing the job.
+        # Pinned to a commit after v2.29.0 because v2.29.0 cannot read Go 1.27 export
+        # data ("export data version 5 is greater than maximum supported version 4")
+        # and skips type-based checks. Switch back to a release tag once one includes it.
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@7b1b5cebe007d62fb58eacb90fc571112939ec30
+          gosec -no-fail -fmt sarif -out results.sarif ./...
+      - uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          sarif_file: results.sarif

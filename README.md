@@ -14,6 +14,8 @@ hachi --grep Running -- kubectl get pod my-pod
 go install github.com/m-mizutani/hachi@latest
 ```
 
+Prebuilt binaries for Linux and macOS (amd64 and arm64) are attached to [GitHub Releases](https://github.com/m-mizutani/hachi/releases).
+
 hachi supports Linux and macOS.
 
 ## Usage
