@@ -88,7 +88,7 @@ func flags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     flagGrep,
 			OnlyOnce: true,
-			Usage:    "success condition: the output contains this string",
+			Usage:    "success condition: the output contains this string as is (not a regular expression; use --regex for patterns)",
 			Sources:  cli.EnvVars("HACHI_GREP"),
 		},
 		&cli.StringFlag{
@@ -119,7 +119,7 @@ func flags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     flagFailGrep,
 			OnlyOnce: true,
-			Usage:    "fail condition: the output contains this string",
+			Usage:    "fail condition: the output contains this string as is (not a regular expression; use --fail-regex for patterns)",
 			Sources:  cli.EnvVars("HACHI_FAIL_GREP"),
 		},
 		&cli.StringFlag{
