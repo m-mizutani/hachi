@@ -8,6 +8,9 @@
 *.so
 *.dylib
 
+# Binary built from this repository
+/hachi
+
 # Test binary, built with `go test -c`
 *.test
 
