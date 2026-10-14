@@ -1,0 +1,39 @@
+name: Test
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        # hachi supports Linux and macOS, and stops commands with OS-specific process group calls.
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: cicd-sensor/cicd-sensor-action@cb0546d5707fcb68bf755006cb97817b3750996b # v0.0.39
+        if: runner.os == 'Linux'
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+      - name: Check formatting
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "These files are not formatted with gofmt:"
+            echo "$unformatted"
+            exit 1
+          fi
+      - run: go vet ./...
+      - name: go vet for Windows
+        # Compiles the non-unix fallback in internal/runner/stop_other.go.
+        run: go vet ./...
+        env:
+          GOOS: windows
+      - run: go test -race ./...
