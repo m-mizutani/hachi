@@ -63,7 +63,7 @@ Each attempt is checked against two kinds of conditions.
 | Option | Matches when |
 | --- | --- |
 | `--exit-code N` | the command exits with code `N` (0-255) |
-| `--grep STRING` | the output contains `STRING` |
+| `--grep STRING` | the output contains `STRING` as is. `STRING` is a fixed string, not a regular expression: `--grep 'a\|b'` matches only the text `a\|b`. Use `--regex` for patterns |
 | `--regex PATTERN` | the output matches the [RE2](https://github.com/google/re2/wiki/Syntax) pattern; `^` and `$` match at the start and end of each line |
 | `--jq QUERY` | the output is JSON and the last value produced by the [jq](https://jqlang.org/manual/) query is neither `false` nor `null` (the same rule as `jq -e`); a query that produces no value does not match |
 | `--expr EXPR` | the [expr-lang](https://expr-lang.org/docs/language-definition) expression is true |
@@ -99,12 +99,12 @@ Every option can also be set with an environment variable. A command line option
 | `--attempt-timeout` | `HACHI_ATTEMPT_TIMEOUT` | `0` | Stop a single attempt after this duration and retry; `0` means no limit other than `--timeout` |
 | `--target` | `HACHI_TARGET` | `stdout` | Output inspected by `--grep`, `--regex`, `--jq` and their fail variants: `stdout`, `stderr` or `combined` |
 | `--exit-code` | `HACHI_EXIT_CODE` | | Success condition: exit code |
-| `--grep` | `HACHI_GREP` | | Success condition: substring |
+| `--grep` | `HACHI_GREP` | | Success condition: fixed substring (not a regular expression) |
 | `--regex` | `HACHI_REGEX` | | Success condition: regular expression |
 | `--jq` | `HACHI_JQ` | | Success condition: jq query |
 | `--expr` | `HACHI_EXPR` | | Success condition: expr-lang expression |
 | `--fail-exit-code` | `HACHI_FAIL_EXIT_CODE` | | Fail condition: exit code |
-| `--fail-grep` | `HACHI_FAIL_GREP` | | Fail condition: substring |
+| `--fail-grep` | `HACHI_FAIL_GREP` | | Fail condition: fixed substring (not a regular expression) |
 | `--fail-regex` | `HACHI_FAIL_REGEX` | | Fail condition: regular expression |
 | `--fail-jq` | `HACHI_FAIL_JQ` | | Fail condition: jq query |
 | `--fail-expr` | `HACHI_FAIL_EXPR` | | Fail condition: expr-lang expression |

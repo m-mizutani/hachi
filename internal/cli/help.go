@@ -12,6 +12,8 @@ CONDITIONS:
   Without success conditions, exit code 0 means success.
   With success conditions, the exit code is ignored unless --exit-code is given.
   --grep, --regex and --jq inspect stdout (change with --target).
+  --grep and --fail-grep match a fixed string. Regular expressions are not
+  supported, so 'a|b' matches only the text "a|b"; use --regex for patterns.
   --jq matches when its last output is neither false nor null.
   --expr variables: stdout, stderr, exit_code, json (parsed stdout or nil).
 
